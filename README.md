@@ -22,7 +22,7 @@ In LeftMenuViewController.m, insert new code (Begin line 37)
 }
 ```
 
-Next, in ```viewDidLoad```, insert ```[self fixBug2]```
+Next, in ```- (void) viewDidLoad```, insert ```[self fixBug2]```
 
 ##Fix Bug 3:
 In ```- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex``` of TranslateDetailViewController.m, insert new code to create ```UIAlertView``` for popup (Begin line 98)
@@ -98,3 +98,10 @@ UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"This is Pa
 In ColorChooserViewController.m, change value "#F44336" and "#03A9F4" to "#3F51B5" and "#607DBB" (Line 44 and line 46)
 
 ##Fix Bug 8:
+In ```- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;``` of ColorChooserViewController.m, insert new code (At line 88)
+
+```[StaticData sharedInstance].mainColor = [Utils colorFromHex:self.arrColorValue[indexPath.row]];```
+
+Next, in ``` - (void) viewDidLoad``` of SplashViewController.m insert new code (At line 20)
+
+```self.view.backgroundColor = [StaticData sharedInstance].mainColor;```
