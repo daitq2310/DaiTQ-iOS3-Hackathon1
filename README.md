@@ -153,10 +153,10 @@ Secondly, In AddWordViewController.m, insert new code (Begin line 89)
 Insert ```[self dismissKeyboardWhenClick];``` to at the end of ```- (void)backAction:(id)sender```, ```- (IBAction)btnClearClicked:(id)sender```, ```- (IBAction)btnSaveClicked:(id)sender```
 
 ##Fix Bug 10:
-Change "Edit" to "Add Word" of AddWordViewController.m (At line 30)
+Change "Edit" to "Add Word" of AddWordViewController.m (At line 31)
 
 ##Fix Bug 11:
-Change "result1" to "result" of DatabaseService.m (At line 97)
+Change "result1" to "result" of DatabaseService.m (At line 98)
 
 ##Fix Bug 12:
 1. In DatabaseService.h, insert ```- (NSString *)getDataByWord : (Words *)word;```
@@ -186,11 +186,46 @@ Change "result1" to "result" of DatabaseService.m (At line 97)
 }
 ```
 
-3. In ```- (BOOL) update:(Words *)word changeEditTime:(BOOL)changeEditTime;``` of DatabaseService.m </br> (Line 128)
+3. In ```- (BOOL) update:(Words *)word changeEditTime:(BOOL)changeEditTime;``` of DatabaseService.m </br> (Line 130)
 </br>
 Change: ```@"UPDATE SET word='%@', result='%@', description='%@', favorites='%@', edited='%@' WHERE _id=%ld"``` </br>
 To: ```@"UPDATE '%@' SET result='%@', description='%@', favorites='%@', edited='%@' WHERE word='%@'"``` </br>
 And delete ```SAFE_STR(word.word)```
 
 #Fix Bug 13: 
-In ```- (void) viewDidLoad``` of TranslateDetailViewController.m insert ```[self.view addGestureRecognizer:[SWRevealViewController shareInstance].panGestureRecognizer];``
+In ```- (void) viewDidLoad``` of TranslateDetailViewController.m 
+
+Insert ```[self.view addGestureRecognizer:[SWRevealViewController shareInstance].panGestureRecognizer];``
+
+##Fix Bug 14:
+Change ".com" to "revittechnology.com" in ```- (void) viewDidLoad``` of AboutViewController.m (Line 23)
+
+##Fix Bug 15:
+Insert ```[[SWRevealViewController shareInstance] revealToggle:self.btnBack];``` into ```- (void)backAction:(id)sender``` of AboutViewController.m (Line 29)
+
+##Fix Bug 16:
+In ```- (NSArray *) search:(NSString *)word eng2pa:(BOOL)isEng2Pa;``` of DatabaseService.m (Line 124) </br>
+</br>
+Change: ```@"SELECT _id, word, result, description, favorites, edited FROM %@ WHERE word LIKE '%@%%' LIMIT 100"``` </br>
+To: ```@"SELECT _id, word, result, description, favorites, edited FROM %@ WHERE word LIKE '%%%@%%' LIMIT 100"```
+
+##Fix Bug 17:
+In ```- (IBAction)btnShareclicked:(id)sender;``` of TranslateDetailViewController.m (Line 61)
+
+Edit: (Begin line 67)
+```
+//if iPhone
+[self presentViewController:controller animated:YES completion:nil];
+```
+To
+```
+    //iphone
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self presentViewController:controller animated:YES completion:nil];
+    }
+    //ipad
+    else {
+        UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:controller];
+        [popup presentPopoverFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/4, 0, 0)inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+```
