@@ -130,7 +130,7 @@ UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:sel
     tap.cancelsTouchesInView = NO;
 ```
 
-Insert ```[self dismissKeyBoardWhenClick];``` to ```- (IBAction)btnEng2PaClicked:(id)sender```, ```- (IBAction)btnPa2EngClicked:(id)sender```
+Insert ```[self dismissKeyBoardWhenClick];``` to at the end of ```- (IBAction)btnEng2PaClicked:(id)sender```, ```- (IBAction)btnPa2EngClicked:(id)sender```
 
 Secondly, In AddWordViewController.m, insert new code (Begin line 89)
 
@@ -150,4 +150,4 @@ Secondly, In AddWordViewController.m, insert new code (Begin line 89)
 }
 ```
 
-Insert ```[self dismissKeyboardWhenClick];``` to ```- (void)backAction:(id)sender```, ```- (IBAction)btnClearClicked:(id)sender```, ```- (IBAction)btnSaveClicked:(id)sender```
+Insert ```[self dismissKeyboardWhenClick];``` to at the end of ```- (void)backAction:(id)sender```, ```- (IBAction)btnClearClicked:(id)sender```, ```- (IBAction)btnSaveClicked:(id)sender```
