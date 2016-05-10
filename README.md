@@ -62,3 +62,18 @@ Next, write new function (Begin line 105)
     }
 }
 ```
+
+##Fix Bug 4:
+In ```- (IBAction)btnResetDataClicked:(id)sender;``` of SettingViewController.m, insert new code (Begin line 48)
+
+```
+[[DatabaseService shareInstance] resetDB];
+NSLog(@"Resettttttttt");
+```
+##Fix Bug 5:
+In ```- (IBAction)btnAboutClicked:(id)sender;``` of SettingViewController.m, insert new code (Begin line 54)
+
+```
+UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"This is Pashto dictionary application for iOS."     delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+[alert show];
+```
