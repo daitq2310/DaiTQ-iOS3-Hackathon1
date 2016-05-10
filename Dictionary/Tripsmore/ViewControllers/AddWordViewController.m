@@ -11,12 +11,15 @@
 
 @interface AddWordViewController () <UIGestureRecognizerDelegate>
 
+@property NSString *str;
+
 @end
 
 @implementation AddWordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _str = [[NSString alloc] init];
     self.view.userInteractionEnabled = YES;
     if (self.word == nil) {
         [self.view addGestureRecognizer:[SWRevealViewController shareInstance].panGestureRecognizer];
@@ -24,7 +27,8 @@
         self.tfWord.text = self.word.word;
         self.tfTranslate.text = self.word.result;
     }
-    self.title = LocalizedString(@"Edit");
+#pragma mark - BUG 10
+    self.title = LocalizedString(@"Add Word");
 }
 
 - (void)backAction:(id)sender
@@ -34,7 +38,7 @@
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
-    [self.view endEditing:YES];
+    [self dismissKeyboardWhenClick];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,7 +49,7 @@
 - (IBAction)btnClearClicked:(id)sender {
     self.tfTranslate.text = @"";
     self.tfWord.text = @"";
-    [self.view endEditing:YES];
+    [self dismissKeyboardWhenClick];
 }
 
 - (IBAction)btnSaveClicked:(id)sender {
@@ -58,9 +62,8 @@
     word.result = self.tfTranslate.text;
     word.isEng2Pa = self.isEng2Pa;
     
-    //NSLog(@"%@, %@", word.word, self.word);
-    
-    if (self.word == nil) {
+    _str = [[DatabaseService shareInstance] getDataByWord:word];
+    if ([_str isEqualToString:@"string"]) {
         BOOL result = [[DatabaseService shareInstance] insert:word changeEditTime:YES];
         if (result) {
             self.tfTranslate.text = @"";
@@ -78,33 +81,15 @@
             [self.view makeToast:LocalizedString(@"Updated word failed!") duration:2.0 position:nil];
             
         }
-        
         NSLog(@"Updateeeeeeeeeee");
     }
-    
-    [self dismissKeyboard];
-    
+    [self dismissKeyboardWhenClick];
 }
 
-- (void) dismissKeyboard {
+#pragma mark - BUG 9
+- (void) dismissKeyboardWhenClick {
     [self.view endEditing:YES];
 }
-
-//- (void)addTapGesture;
-//{
-//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTap:)];
-//    //tapGesture.numberOfTapsRequired = 1;
-//    tapGesture.delegate = self;
-//
-//
-//
-//    [self.view addGestureRecognizer:tapGesture];
-//}
-//
-//- (void)didTap:(UITapGestureRecognizer *)tapGesture;
-//{
-//    [self dismissKeyboard];
-//}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     if ([_tfWord isKindOfClass:[UITextField class]] && [_tfWord isFirstResponder]) {
@@ -115,7 +100,5 @@
         [_tfTranslate resignFirstResponder];
     }
 }
-
-
 
 @end

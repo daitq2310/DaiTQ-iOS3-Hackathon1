@@ -85,10 +85,9 @@
     NSString *strColor = self.arrColorValue[indexPath.row];
     [[NSUserDefaults standardUserDefaults] setObject:strColor forKey:kUD_MainColor];
     [[NSUserDefaults standardUserDefaults] synchronize];
+#pragma mark - BUG 8
+    [StaticData sharedInstance].mainColor = [Utils colorFromHex:self.arrColorValue[indexPath.row]];
     [[LeftMenuViewController shareInstance] refreshColor];
     [self.navigationController popViewControllerAnimated:YES];
-    NSLog(@"%@", strColor);
-    NSLog(@"%@", kUD_MainColor);
-    
 }
 @end

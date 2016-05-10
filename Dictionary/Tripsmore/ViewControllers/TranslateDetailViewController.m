@@ -48,7 +48,10 @@
 }
 
 - (IBAction)btnFavouriteClicked:(UIButton *)sender {
+#pragma mark - BUG 18
     if (sender.selected) {
+        self.word.favorites = @"0";
+    } else {
         self.word.favorites = @"1";
     }
     [[DatabaseService shareInstance] update:self.word changeEditTime:NO];
@@ -65,6 +68,7 @@
     
     UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:postItems applicationActivities:nil];
     
+#pragma mark - BUG 17
     //iphone
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self presentViewController:controller animated:YES completion:nil];
@@ -100,8 +104,6 @@
     }
 }
 
-
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0)
@@ -120,36 +122,14 @@
             [self.view makeToast:LocalizedString(@"Deleted word failed!") duration:2.0 position:nil];
             
         }
+        [self.navigationController popViewControllerAnimated:YES];
         NSLog(@"Deleteeeeeeeeeeeeee");
     }
     
     if (buttonIndex == 1)
     {
-        NSLog(@"11111111");
+        NSLog(@"Do nothing");
     }
 }
-
-
-//- (void)intializeFetchedResultsController;
-//{
-//
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
-//    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"createdAt" ascending:NO];
-//    request.sortDescriptors = @[sort];
-//
-//    NSManagedObjectContext *moc = APPDELEGATE.managedObjectContext;
-//
-//    _fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
-//
-//    self.fetchedResultsController.delegate = self;
-//
-//    NSError *error = nil;
-//
-//    if (![_fetchedResultsController performFetch:&error]) {
-//        NSLog(@"%@",error);
-//    }
-//
-//}
-
 
 @end

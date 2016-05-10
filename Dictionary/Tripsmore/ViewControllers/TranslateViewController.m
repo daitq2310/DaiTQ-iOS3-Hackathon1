@@ -22,7 +22,11 @@
     [self.view addGestureRecognizer:[SWRevealViewController shareInstance].panGestureRecognizer];
     [DatabaseService shareInstance];
     [self btnEng2PaClicked:self.btnEng2Pa];
-    
+
+#pragma mark - BUG 9
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyBoardWhenTap:)];
+    [self.tableView addGestureRecognizer:tap];
+    tap.cancelsTouchesInView = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -36,7 +40,7 @@
 - (void)backAction:(id)sender
 {
     [[SWRevealViewController shareInstance] revealToggle:self.btnBack];
-    [self.view endEditing:YES];
+    [self dismissKeyBoardWhenClick];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -47,13 +51,13 @@
     self.isEng2Pa = YES;
     [self doSearch:self.tfInput.text];
     [Utils setXView:self.viewLine height:self.btnEng2Pa.frame.origin.x];
-    [self.view endEditing:YES];
+    [self dismissKeyBoardWhenClick];
 }
 - (IBAction)btnPa2EngClicked:(id)sender {
     self.isEng2Pa = NO;
     [self doSearch:self.tfInput.text];
     [Utils setXView:self.viewLine height:self.btnPa2Eng.frame.origin.x];
-    [self.view endEditing:YES];
+    [self dismissKeyBoardWhenClick];
 }
 - (IBAction)btnClearClicked:(id)sender {
     self.tfInput.text = @"";
@@ -101,16 +105,16 @@
     TranslateDetailViewController *vc = [[Utils mainStoryboard] instantiateViewControllerWithIdentifier:@"TranslateDetailViewController"];
     vc.word = word;
     [self.navigationController pushViewController:vc animated:YES];
-    [self dismissKeyboard];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+#pragma mark - BUG 9
+- (IBAction) dismissKeyBoardWhenTap:(id)sender{
     if ([_tfInput isKindOfClass:[UITextField class]] && [_tfInput isFirstResponder]) {
         [_tfInput resignFirstResponder];
     }
 }
 
-- (void) dismissKeyboard {
+- (void) dismissKeyBoardWhenClick {
     [self.view endEditing:YES];
 }
 @end

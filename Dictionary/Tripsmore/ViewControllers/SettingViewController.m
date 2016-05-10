@@ -42,16 +42,30 @@
     [self.navigationController pushViewController:vc animated:YES];
    
 }
-- (IBAction)btnResetDataClicked:(id)sender {
-    
-    [[DatabaseService shareInstance] resetDB];
-    
-    
-    NSLog(@"Resettttttttt");
-}
-- (IBAction)btnAboutClicked:(id)sender {
 
+#pragma mark - BUG 4
+- (IBAction)btnResetDataClicked:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Do you want to reset all data?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    alert.tag = 101;
+    [alert show];
 }
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 101) {
+        if (buttonIndex == 0) {
+            [[DatabaseService shareInstance] resetDB];
+            NSLog(@"Resettttttttt");
+        }
+    }
+}
+
+#pragma mark - BUG 5
+- (IBAction)btnAboutClicked:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"This is Pashto dictionary application for iOS." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+}
+
 - (IBAction)btnRemoveAdsClicked:(id)sender {
     [self buyItem:kIAP_removeads];
 }

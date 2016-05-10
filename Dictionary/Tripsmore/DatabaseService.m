@@ -59,6 +59,27 @@ static id _instance = nil;
     self.database = [[FMDatabase alloc] initWithPath:pathInDocument];
 }
 
+- (NSString *)getDataByWord : (Words *)word;
+{
+    NSString *str = [[NSString alloc] init];
+    
+    [self.database open];
+    NSString *strDB = @"table_eng_pa";
+    if (!word.isEng2Pa) {
+        strDB = @"table_pa_eng";
+    }
+    
+    NSString *strQuery = [NSString stringWithFormat:@"select favorites from %@ where word = ?",strDB];
+    FMResultSet *rs = [_database executeQuery:strQuery,word.word];
+    if (rs.next) {
+        str = [rs stringForColumn:@"favorites"];
+    } else {
+        return @"string";
+    }
+
+    return str;
+}
+
 - (BOOL) insert:(Words *)word changeEditTime:(BOOL)changeEditTime;
 {
     [self.database open];
@@ -73,6 +94,7 @@ static id _instance = nil;
         strDate = word.edited;
     }
     
+#pragma mark - BUG 11
     NSString *strQuery = [NSString stringWithFormat:@"INSERT INTO %@ (word, result, description, favorites, edited) VALUES ('%@', '%@', '%@', '%@', '%@')", strDB,
                           SAFE_STR(word.word),
                           SAFE_STR(word.result),
@@ -104,12 +126,13 @@ static id _instance = nil;
         strDate = word.edited;
     }
     
-    NSString *strQuery = [NSString stringWithFormat:@"UPDATE '%@' SET word='%@', result='%@', description='%@', favorites='%@', edited='%@' WHERE _id=%ld", strDB,
-                          SAFE_STR(word.word),
+#pragma mark - BUG 12
+    NSString *strQuery = [NSString stringWithFormat:@"UPDATE '%@' SET result='%@', description='%@', favorites='%@', edited='%@' WHERE word='%@'", strDB,
                           SAFE_STR(word.result),
                           SAFE_STR(word.strDescription),
                           SAFE_STR(word.favorites),
-                          SAFE_STR(strDate), word.mId];
+                          SAFE_STR(strDate),
+                          SAFE_STR(word.word)];
     BOOL success = [self.database executeUpdate:strQuery];
     if (!success) {
         NSLog(@"Error %d: %@", [self.database lastErrorCode], [self.database lastErrorMessage]);
@@ -129,6 +152,7 @@ static id _instance = nil;
     if (!isEng2Pa) {
         strDB = @"table_pa_eng";
     }
+#pragma mark - BUG 16
     NSString *strQuery = [NSString stringWithFormat:@"SELECT _id, word, result, description, favorites, edited FROM %@ WHERE word LIKE '%%%@%%' LIMIT 100", strDB, word];
     FMResultSet *results = [self.database executeQuery:strQuery];
     NSLog(@"query: %@", results.query);

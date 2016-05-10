@@ -19,6 +19,8 @@
     [super viewDidLoad];
     self.title = LocalizedString(@"Favourites");
     [self refreshData];
+#pragma mark - BUG 13
+    [self.view addGestureRecognizer:[SWRevealViewController shareInstance].panGestureRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated
