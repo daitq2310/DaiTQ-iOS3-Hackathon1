@@ -107,7 +107,7 @@ Next, in ``` - (void) viewDidLoad``` of SplashViewController.m, insert new code 
 
 ```self.view.backgroundColor = [StaticData sharedInstance].mainColor;```
 
-##Fix Bug 9
+##Fix Bug 9:
 Firstly, In TranslateViewController.m, insert new code (Begin line 111)
 
 ```
@@ -151,3 +151,39 @@ Secondly, In AddWordViewController.m, insert new code (Begin line 89)
 ```
 
 Insert ```[self dismissKeyboardWhenClick];``` to at the end of ```- (void)backAction:(id)sender```, ```- (IBAction)btnClearClicked:(id)sender```, ```- (IBAction)btnSaveClicked:(id)sender```
+
+##Fix Bug 10:
+Change "Edit" to "Add Word" of AddWordViewController.m (At line 30)
+
+##Fix Bug 11:
+Change "result1" to "result" of DatabaseService.m (At line 97)
+
+##Fix Bug 12:
+1. In DatabaseService.h, insert ```- (NSString *)getDataByWord : (Words *)word;```
+
+2. In DatabaseService.m, insert new code (Begin line 62)
+
+```
+- (NSString *)getDataByWord : (Words *)word;
+{
+    NSString *str = [[NSString alloc] init];
+    
+    [self.database open];
+    NSString *strDB = @"table_eng_pa";
+    if (!word.isEng2Pa) {
+        strDB = @"table_pa_eng";
+    }
+    
+    NSString *strQuery = [NSString stringWithFormat:@"select favorites from %@ where word = ?",strDB];
+    FMResultSet *rs = [_database executeQuery:strQuery,word.word];
+    if (rs.next) {
+        str = [rs stringForColumn:@"favorites"];
+    } else {
+        return @"string";
+    }
+
+    return str;
+}
+```
+
+3. In DatabaseService.m, change "UPDATE SET word='%@', result='%@', description='%@', favorites='%@', edited='%@' WHERE _id=%ld" to " UPDATE '%@' SET result='%@', description='%@', favorites='%@', edited='%@' WHERE word='%@'" in ```- (BOOL) update:(Words *)word changeEditTime:(BOOL)changeEditTime;``` and delete ```SAFE_STR(word.word)```
