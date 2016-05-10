@@ -80,6 +80,7 @@ Next, write new function to call event of ```UIAlertView```
     if (alertView.tag == 101) {
         if (buttonIndex == 0) {
             [[DatabaseService shareInstance] resetDB];
+            [self.navigationController popViewControllerAnimated:YES];
             NSLog(@"Resettttttttt");
         }
     }
