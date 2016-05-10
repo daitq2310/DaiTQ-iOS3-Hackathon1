@@ -103,6 +103,51 @@ In ```- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSInde
 
 ```[StaticData sharedInstance].mainColor = [Utils colorFromHex:self.arrColorValue[indexPath.row]];```
 
-Next, in ``` - (void) viewDidLoad``` of SplashViewController.m insert new code (At line 20)
+Next, in ``` - (void) viewDidLoad``` of SplashViewController.m, insert new code (At line 20)
 
 ```self.view.backgroundColor = [StaticData sharedInstance].mainColor;```
+
+##Fix Bug 9
+Firstly, In TranslateViewController.m, insert new code (Begin line 111)
+
+```
+- (IBAction) dismissKeyBoardWhenTap:(id)sender{
+    if ([_tfInput isKindOfClass:[UITextField class]] && [_tfInput isFirstResponder]) {
+        [_tfInput resignFirstResponder];
+    }
+}
+
+- (void) dismissKeyBoardWhenClick {
+    [self.view endEditing:YES];
+}
+```
+
+Next, insert into ```- (void) viewDidLoad``` 
+
+```
+UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyBoardWhenTap:)];
+    [self.tableView addGestureRecognizer:tap];
+    tap.cancelsTouchesInView = NO;
+```
+
+Insert ```[self dismissKeyBoardWhenClick];``` to ```- (IBAction)btnEng2PaClicked:(id)sender```, ```- (IBAction)btnPa2EngClicked:(id)sender```
+
+Secondly, In AddWordViewController.m, insert new code (Begin line 89)
+
+```
+- (void) dismissKeyboardWhenClick {
+    [self.view endEditing:YES];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if ([_tfWord isKindOfClass:[UITextField class]] && [_tfWord isFirstResponder]) {
+        [_tfWord resignFirstResponder];
+    }
+    
+    if ([_tfTranslate isKindOfClass:[UITextField class]] && [_tfTranslate isFirstResponder]) {
+        [_tfTranslate resignFirstResponder];
+    }
+}
+```
+
+Insert ```[self dismissKeyboardWhenClick];``` to ```- (void)backAction:(id)sender```, ```- (IBAction)btnClearClicked:(id)sender```, ```- (IBAction)btnSaveClicked:(id)sender```
