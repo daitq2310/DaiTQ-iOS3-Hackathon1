@@ -25,7 +25,7 @@ In LeftMenuViewController.m, insert new code (Begin line 37)
 Next, in ```- (void) viewDidLoad```, insert ```[self fixBug2]```
 
 ##Fix Bug 3:
-In ```- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex``` of TranslateDetailViewController.m, insert new code to create ```UIAlertView``` for popup (Begin line 98)
+In ```- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex``` of TranslateDetailViewController.m, insert new code to create ```UIAlertView``` for popup (Begin line 101)
 
 ```
 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"DELETE" message:@"Do you want to delete word?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
@@ -210,9 +210,9 @@ Change: ```@"SELECT _id, word, result, description, favorites, edited FROM %@ WH
 To: ```@"SELECT _id, word, result, description, favorites, edited FROM %@ WHERE word LIKE '%%%@%%' LIMIT 100"```
 
 ##Fix Bug 17:
-In ```- (IBAction)btnShareclicked:(id)sender;``` of TranslateDetailViewController.m (Line 61)
+In ```- (IBAction)btnShareclicked:(id)sender;``` of TranslateDetailViewController.m (Line 65)
 
-Edit: (Begin line 67)
+Edit: (Begin line 72)
 ```
 //if iPhone
 [self presentViewController:controller animated:YES completion:nil];
@@ -227,5 +227,23 @@ To
     else {
         UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:controller];
         [popup presentPopoverFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/4, 0, 0)inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+```
+
+##Fix Bug 18:
+In ```- (IBAction)btnFavouriteClicked:(UIButton *)sender``` of TranslateDetailViewController.m
+
+Change: (Line 52)
+```
+if (sender.selected) {
+    self.word.favorites = @"1";
+}
+```
+To: 
+```
+if (sender.selected) {
+        self.word.favorites = @"0";
+    } else {
+        self.word.favorites = @"1";
     }
 ```
