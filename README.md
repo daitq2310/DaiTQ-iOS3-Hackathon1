@@ -186,4 +186,4 @@ Change "result1" to "result" of DatabaseService.m (At line 97)
 }
 ```
 
-3. In DatabaseService.m, change "UPDATE SET word='%@', result='%@', description='%@', favorites='%@', edited='%@' WHERE _id=%ld" to " UPDATE '%@' SET result='%@', description='%@', favorites='%@', edited='%@' WHERE word='%@'" in ```- (BOOL) update:(Words *)word changeEditTime:(BOOL)changeEditTime;``` and delete ```SAFE_STR(word.word)```
+3. In ```- (BOOL) update:(Words *)word changeEditTime:(BOOL)changeEditTime; and delete SAFE_STR(word.word)``` of DatabaseService.m, change "UPDATE SET word='%@', result='%@', description='%@', favorites='%@', edited='%@' WHERE _id=%ld" to "UPDATE '%@' SET result='%@', description='%@', favorites='%@', edited='%@' WHERE word='%@'"
