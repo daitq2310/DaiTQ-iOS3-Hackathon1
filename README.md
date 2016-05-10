@@ -93,3 +93,8 @@ In ```- (IBAction)btnAboutClicked:(id)sender;``` of SettingViewController.m, ins
 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"This is Pashto dictionary application for iOS."     delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 [alert show];
 ```
+
+##Fix Bug 6 + 7:
+In ColorChooserViewController.m, change value "#F44336" and "#03A9F4" to "#3F51B5" and "#607DBB" (Line 44 and line 46)
+
+##Fix Bug 8:
