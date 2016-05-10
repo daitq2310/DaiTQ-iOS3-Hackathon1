@@ -186,8 +186,11 @@ Change "result1" to "result" of DatabaseService.m (At line 97)
 }
 ```
 
-3. In ```- (BOOL) update:(Words *)word changeEditTime:(BOOL)changeEditTime;``` of DatabaseService.m </br>
+3. In ```- (BOOL) update:(Words *)word changeEditTime:(BOOL)changeEditTime;``` of DatabaseService.m </br> (Line 128)
 </br>
 Change: ```@"UPDATE SET word='%@', result='%@', description='%@', favorites='%@', edited='%@' WHERE _id=%ld"``` </br>
 To: ```@"UPDATE '%@' SET result='%@', description='%@', favorites='%@', edited='%@' WHERE word='%@'"``` </br>
 And delete ```SAFE_STR(word.word)```
+
+#Fix Bug 13: 
+In ```- (void) viewDidLoad``` of TranslateDetailViewController.m insert ```[self.view addGestureRecognizer:[SWRevealViewController shareInstance].panGestureRecognizer];``
