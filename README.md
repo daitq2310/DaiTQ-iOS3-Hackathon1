@@ -64,14 +64,30 @@ Next, write new function (Begin line 105)
 ```
 
 ##Fix Bug 4:
-In ```- (IBAction)btnResetDataClicked:(id)sender;``` of SettingViewController.m, insert new code (Begin line 48)
+In ```- (IBAction)btnResetDataClicked:(id)sender;``` of SettingViewController.m, insert new code (Begin line 48). Use tag for alert if in file have many ```UIAlertView```
 
 ```
-[[DatabaseService shareInstance] resetDB];
-NSLog(@"Resettttttttt");
+UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Do you want to reset all data?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    alert.tag = 101;
+[alert show];
 ```
+
+Next, write new function to call event of ```UIAlertView```
+
+```
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 101) {
+        if (buttonIndex == 0) {
+            [[DatabaseService shareInstance] resetDB];
+            NSLog(@"Resettttttttt");
+        }
+    }
+}
+```
+
 ##Fix Bug 5:
-In ```- (IBAction)btnAboutClicked:(id)sender;``` of SettingViewController.m, insert new code (Begin line 54)
+In ```- (IBAction)btnAboutClicked:(id)sender;``` of SettingViewController.m, insert new code (Begin line 64)
 
 ```
 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"This is Pashto dictionary application for iOS."     delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
